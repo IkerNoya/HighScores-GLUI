@@ -8,8 +8,7 @@
 using namespace std;
 using namespace HighScoreListLT;
 
-const int maxL = 26;
-
+void drawText(const char* text, int length, int x, int y);
 void display();
 bool initGL();
 
@@ -25,6 +24,28 @@ int main(int argc, char* argv[])
 	}
 	glutMainLoop();
 	return 0;
+}
+
+void drawText(const char* text, int length, int x, int y)
+{
+	glMatrixMode(GL_PROJECTION);
+	double* matrix = new double[16];
+	glGetDoublev(GL_PROJECTION_MATRIX, matrix);
+	glLoadIdentity();
+	glOrtho(0, 800, 0, 600, -5, 5);
+	glMatrixMode(GL_MODELVIEW);
+	glLoadIdentity();
+	glPushMatrix();
+	glLoadIdentity();
+	glRasterPos2i(x, y);
+	for (int i = 0; i < length; i++)
+	{
+		glutBitmapCharacter(GLUT_BITMAP_9_BY_15, (int)text[i]);
+	}
+	glPopMatrix();
+	glMatrixMode(GL_PROJECTION);
+	glLoadMatrixd(matrix);
+	glMatrixMode(GL_MODELVIEW);
 }
 
 void display()
@@ -48,6 +69,8 @@ void display()
 	glEnd();
 
 	glColor3f(0, 0, 0);
+	string title = "HighScores";
+	drawText(title.data(), title.size(), 350, 500);
 
 	glutSwapBuffers();
 }
