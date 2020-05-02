@@ -9,10 +9,13 @@ using namespace std;
 using namespace HighScoreListLT;
 
 const int maxL = 26;
+const int initialScorePosY = 430;
+const int spaceBetweenScores = 25;
 
 void drawText(const char* text, int length, int x, int y);
 string createNames();
 void fillScores();
+void createTable();
 void display();
 bool initGL();
 
@@ -23,6 +26,7 @@ HighScore* scores = new HighScore(false, 10);
 int main(int argc, char* argv[])
 {
 	glutInit(&argc, argv);
+	fillScores();
 	if (!initGL())
 	{
 		exit(1);
@@ -69,15 +73,13 @@ void fillScores()
 {
 	for (int i = 0; i < scores->sizeList; i++)
 	{
-		int scoreVal = rand() % 1000 + 1;
+		int scoreVal = rand() % 1000;
 		scores->InsertScore(scoreVal, createNames());
 	}
 }
 
-void display()
+void createTable()
 {
-	glClear(GL_COLOR_BUFFER_BIT);
-
 	glBegin(GL_QUADS);
 	//------------green---------------
 	glColor3f(0, 0.6f, 0.15f);
@@ -93,11 +95,25 @@ void display()
 	glVertex2f(-0.5f, 0.57f); // bottom left
 
 	glEnd();
+}
+
+void display()
+{
+	glClear(GL_COLOR_BUFFER_BIT);
+
+	createTable();
 
 	glColor3f(0, 0, 0);
 	string title = "HighScores";
-	drawText(title.data(), title.size(), 350, 500);
-
+	drawText(title.data(), title.size(), 360, 500);
+	int posY = initialScorePosY;
+	string space = " -------------------- ";
+	for (int i = 0; i < scores->sizeList; i++)
+	{
+		string fil = scores->GetNodeScore(i).name + space + to_string(scores->GetNodeScore(i).score);
+		drawText(fil.data(), fil.length(), 260, posY);
+		posY -= spaceBetweenScores;
+	}
 	glutSwapBuffers();
 }
 
