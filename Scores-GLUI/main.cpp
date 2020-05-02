@@ -8,12 +8,15 @@
 using namespace std;
 using namespace HighScoreListLT;
 
+const int maxL = 26;
+
 void drawText(const char* text, int length, int x, int y);
+string createNames();
 void display();
 bool initGL();
 
 int main_window;
-
+char letters[maxL] = { 'a','b','c','d','e','f','g','h','y','j','k','l','m','n','o','p','q','r','s','t','u','v', 'w', 'x', 'y', 'z' };
 
 int main(int argc, char* argv[])
 {
@@ -46,6 +49,17 @@ void drawText(const char* text, int length, int x, int y)
 	glMatrixMode(GL_PROJECTION);
 	glLoadMatrixd(matrix);
 	glMatrixMode(GL_MODELVIEW);
+}
+
+string createNames()
+{
+	int nameLimit = 6;
+	string names = "";
+	for (int i = 0; i < 6; i++)
+	{
+		names = names + letters[rand() % maxL];
+	}
+	return names;
 }
 
 void display()
