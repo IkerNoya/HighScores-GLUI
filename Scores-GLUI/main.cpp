@@ -12,11 +12,13 @@ const int maxL = 26;
 
 void drawText(const char* text, int length, int x, int y);
 string createNames();
+void fillScores();
 void display();
 bool initGL();
 
 int main_window;
 char letters[maxL] = { 'a','b','c','d','e','f','g','h','y','j','k','l','m','n','o','p','q','r','s','t','u','v', 'w', 'x', 'y', 'z' };
+HighScore* scores = new HighScore(false, 10);
 
 int main(int argc, char* argv[])
 {
@@ -26,6 +28,7 @@ int main(int argc, char* argv[])
 		exit(1);
 	}
 	glutMainLoop();
+	delete scores;
 	return 0;
 }
 
@@ -60,6 +63,15 @@ string createNames()
 		names = names + letters[rand() % maxL];
 	}
 	return names;
+}
+
+void fillScores()
+{
+	for (int i = 0; i < scores->sizeList; i++)
+	{
+		int scoreVal = rand() % 1000 + 1;
+		scores->InsertScore(scoreVal, createNames());
+	}
 }
 
 void display()
